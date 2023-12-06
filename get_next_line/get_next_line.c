@@ -112,5 +112,6 @@ char	*get_next_line(int fd)
 		buffer[read_len] = '\0';
 		line = ft_join(line, buffer);
 	}
+	free (buffer);
 	return (line);
 }
