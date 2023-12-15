@@ -50,7 +50,8 @@ static char	*ft_join(char *s1, char *s2)
 	str = malloc (sizeof (char) * ((ft_strlen(s1) + ft_strlen(s2)) + 1));
 	if (!str)
 	{
-		free (str);
+		if (s1)
+			free (s1);
 		return (0);
 	}
 	while (s1[i] != '\0')
@@ -128,3 +129,4 @@ char	*get_next_line(int fd)
 	}
 	return (line);
 }
+
