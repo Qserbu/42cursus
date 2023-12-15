@@ -11,7 +11,6 @@
 /* ************************************************************************** */
 
 #include "get_next_line.h"
-#include <stdio.h>
 
 static char	*ft_calloc(size_t len)
 {
@@ -50,7 +49,10 @@ static char	*ft_join(char *s1, char *s2)
 	k = 0;
 	str = malloc (sizeof (char) * ((ft_strlen(s1) + ft_strlen(s2)) + 1));
 	if (!str)
+	{
+		free (str);
 		return (0);
+	}
 	while (s1[i] != '\0')
 	{
 		str[i] = s1[i];
@@ -92,26 +94,37 @@ bool	ft_end_line(char *line, char *buffer)
 	return (false);
 }
 
-
 char	*get_next_line(int fd)
 {
-	static char	*buffer = NULL;
+	static char	*buffer;
 	char		*line;
 	int			read_len;
 
 	read_len = 1;
-	line = ft_calloc(1);
-	if (fd < 0 || BUFFER_SIZE <= 0)
+	if (fd < 0 || BUFFER_SIZE < 1)
 		return (NULL);
+	line = ft_calloc(1);
 	if (!buffer)
 		buffer = ft_calloc(BUFFER_SIZE + 1);
-	line = ft_join(line, buffer);
+	if (buffer)
+		line = ft_join(line, buffer);
 	while (read_len > 0 && !ft_end_line(line, buffer))
 	{
 		read_len = read (fd, buffer, BUFFER_SIZE);
+		if (read_len < 0)
+		{
+			free (line);
+			return (NULL);
+		}
 		buffer[read_len] = '\0';
 		line = ft_join(line, buffer);
 	}
-	free (buffer);
+	if (!line[0] && read_len == 0)
+	{
+		free(line);
+		free (buffer);
+		buffer = NULL;
+		return (NULL);
+	}
 	return (line);
 }
