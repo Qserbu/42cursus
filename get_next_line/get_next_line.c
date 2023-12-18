@@ -101,7 +101,6 @@ char	*get_next_line(int fd)
 		buffer = ft_calloc(BUFFER_SIZE + 1);
 	else
 		line = ft_join(line, buffer);
-	ft_while(buffer, line, fd, read_len);
 	while (read_len > 0 && !ft_end_line(line, buffer))
 	{
 		read_len = read (fd, buffer, BUFFER_SIZE);
