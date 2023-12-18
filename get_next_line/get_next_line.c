@@ -29,16 +29,6 @@ static char	*ft_calloc(size_t len)
 	return (src);
 }
 
-static size_t	ft_strlen(const char *str)
-{
-	unsigned int	k;
-
-	k = 0;
-	while (str[k] != '\0')
-		k++;
-	return (k);
-}
-
 static char	*ft_join(char *s1, char *s2)
 {
 	char	*str;
@@ -47,13 +37,15 @@ static char	*ft_join(char *s1, char *s2)
 
 	i = 0;
 	k = 0;
-	str = malloc (sizeof (char) * ((ft_strlen(s1) + ft_strlen(s2)) + 1));
+	while (s1[i])
+		i++;
+	while (s2[k])
+		k++;
+	str = malloc (sizeof (char) * (i + k + 1));
 	if (!str)
-	{
-		if (s1)
-			free (s1);
 		return (0);
-	}
+	i = 0;
+	k = 0;
 	while (s1[i] != '\0')
 	{
 		str[i] = s1[i];
@@ -107,8 +99,9 @@ char	*get_next_line(int fd)
 	line = ft_calloc(1);
 	if (!buffer)
 		buffer = ft_calloc(BUFFER_SIZE + 1);
-	if (buffer)
+	else
 		line = ft_join(line, buffer);
+	ft_while(buffer, line, fd, read_len);
 	while (read_len > 0 && !ft_end_line(line, buffer))
 	{
 		read_len = read (fd, buffer, BUFFER_SIZE);
@@ -122,11 +115,10 @@ char	*get_next_line(int fd)
 	}
 	if (!line[0] && read_len == 0)
 	{
-		free(line);
+		free (line);
 		free (buffer);
 		buffer = NULL;
 		return (NULL);
 	}
 	return (line);
 }
-
