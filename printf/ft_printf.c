@@ -6,11 +6,11 @@
 /*   By: qserbu <qserbu@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/16 20:36:55 by qserbu            #+#    #+#             */
-/*   Updated: 2023/11/24 18:48:37 by qserbu           ###   ########.fr       */
+/*   Updated: 2023/12/22 21:00:16 by qserbu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "printf.h"
+#include "ft_printf.h"
 #include <stdarg.h>
 #include <stdio.h>
 
@@ -36,7 +36,7 @@ static int	ft_percent(const char *str, va_list ap)
 	if (str[i] == 'x')
 		len += ft_putnbr_hexalow(va_arg(ap, unsigned int));
 	if (str[i] == 'X')
-		len += ft_putnbr_hexa(va_arg(ap, unsigned int));
+		len += ft_putnbr_hexaupper(va_arg(ap, unsigned int));
 	if (str[i] == '%')
 		len += write(1, "%", 1);
 	return (len);
@@ -55,7 +55,7 @@ int	ft_printf(const char *s, ...)
 		return (-1);
 	while (s[i] != '\0')
 	{
-		if (i == '%')
+		if (s[i] == '%')
 		{
 			len += ft_percent(&s[i + 1], ap);
 			i++;
@@ -68,8 +68,8 @@ int	ft_printf(const char *s, ...)
 	return (len);
 }
 
-int main ()
-{
-	printf("%X\n", ft_putnbr_hexa(50));
-	ft_printf("%X\n", ft_putnbr_hexa(50));
-}
+// int main ()
+// {
+// 	printf("%X\n", ft_putnbr_hexa(50));
+// 	ft_printf("%X\n", ft_putnbr_hexa(50));
+// }

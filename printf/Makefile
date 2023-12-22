@@ -16,29 +16,21 @@ CFLAGS = -Wall -Wextra -Werror
 
 NAME = libftprintf.a
 
-SRC = ft_printf.c
-		ft_pointer.c
-		ft_putnbr_hexaupper.c
-		ft_putnbr_hexalow.c
-		ft_putnbrpos.c
-		ft_putnbr_base.c
-		ft_putstr.c
-
+SRC = ft_printf.c \
+		ft_printf_hexa.c \
+		ft_printf_library.c \
+		
 CC = cc
 
 AR = ar rcs
 
-.c.o:
-	$(CC) $(CFLAGS) -I includes -c $< -o $(<:.c=.o)
-	
 $(NAME): $(OBJ)
 	 $(AR) $(NAME) $(OBJ)
 
 all: $(NAME)
 
 clean:
-	rm -f $(OBJ) $(OBJ_BONUS)
-
+	rm -f $(OBJ)
 fclean: clean 
 	rm -f $(NAME)
 
