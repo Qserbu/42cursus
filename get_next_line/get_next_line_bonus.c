@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.c                                    :+:      :+:    :+:   */
+/*   get_next_line_bonus.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: qserbu <qserbu@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/12/12 20:05:35 by qserbu            #+#    #+#             */
-/*   Updated: 2023/12/22 20:10:11 by qserbu           ###   ########.fr       */
+/*   Created: 2023/12/15 16:54:17 by qserbu            #+#    #+#             */
+/*   Updated: 2023/12/22 20:05:54 by qserbu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
+#include "get_next_line_bonus.h"
 
 static char	*ft_calloc(size_t len)
 {
@@ -110,7 +110,7 @@ char	*ft_cut(int read_len, char *line, char *buffer, int fd)
 
 char	*get_next_line(int fd)
 {
-	static char	*buffer;
+	static char	*buffer[1024];
 	char		*line;
 	int			read_len;
 
@@ -118,16 +118,16 @@ char	*get_next_line(int fd)
 	if (fd < 0 || BUFFER_SIZE < 1)
 		return (NULL);
 	line = ft_calloc(1);
-	if (!buffer)
-		buffer = ft_calloc(BUFFER_SIZE + 1);
+	if (!buffer[fd])
+		buffer[fd] = ft_calloc(BUFFER_SIZE + 1);
 	else
-		line = ft_join(line, buffer);
-	line = ft_cut(read_len, line, buffer, fd);
+		line = ft_join(line, buffer[fd]);
+	line = ft_cut(read_len, line, buffer[fd], fd);
 	if (!line || !*line)
 	{
 		free(line);
-		free(buffer);
-		buffer = NULL;
+		free(buffer[fd]);
+		buffer[fd] = NULL;
 		return (NULL);
 	}
 	return (line);
