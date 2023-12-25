@@ -38,7 +38,7 @@ int	ft_putnbr_hexalow(long long int n)
 
 	hexalower = "0123456789abcdef";
 	count = 0;
-	if (n < 16)
+	if (n < 16 && n >= 0)
 	{
 		count += write (1, &hexalower[n], 1);
 	}
